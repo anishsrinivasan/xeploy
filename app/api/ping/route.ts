@@ -3,7 +3,8 @@ import { NextRequest } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { getCache, setCache } from "@/utils/upstash/cache";
-import { MOCK_ENVIRONMENT_ID, MOCK_PROJECT_ID } from "@/app/constants";
+import { MOCK_ENVIRONMENT_ID, MOCK_PROJECT_ID } from "@/constants";
+import { ERROR_MESSAGES } from "@/constants/errors";
 
 export const runtime = "edge";
 
@@ -41,7 +42,7 @@ export async function GET(_: NextRequest) {
     return NextResponse.json(
       {
         features: [],
-        error,
+        error: ERROR_MESSAGES.INTERNAL_ERROR,
       },
       {
         headers: {
