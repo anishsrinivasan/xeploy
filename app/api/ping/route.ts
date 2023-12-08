@@ -8,7 +8,7 @@ export const runtime = "edge"; // 'nodejs' is the default
 export async function GET(_: NextRequest) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  
+
   const { data: features, error } = await supabase
     .from("features_env_mapping")
     .select();
@@ -32,6 +32,11 @@ export async function GET(_: NextRequest) {
     },
     {
       status: 200,
+      headers: {
+        "Cache-Control": "max-age=10",
+        "CDN-Cache-Control": "max-age=60",
+        "Vercel-CDN-Cache-Control": "max-age=3600",
+      },
     }
   );
 }
