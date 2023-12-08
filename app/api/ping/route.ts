@@ -46,7 +46,7 @@ export async function GET(_: NextRequest) {
     );
   }
 
-  setCache(cacheKey, features, 60);
+  setCache(cacheKey, features, 60 * 60);
 
   return NextResponse.json(
     {
