@@ -1,6 +1,8 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
+export const revalidate = 60 * 2;
+
 export default async function Ping() {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
