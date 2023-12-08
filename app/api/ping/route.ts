@@ -13,7 +13,7 @@ export async function GET(_: NextRequest) {
   const cacheKey = "ping";
 
   const projectId = MOCK_PROJECT_ID;
-  // const environmentId = MOCK_ENVIRONMENT_ID;
+  const envId = MOCK_ENVIRONMENT_ID;
 
   const cacheResponse = await getCache(cacheKey);
   if (cacheResponse.cached === "HIT") {
@@ -34,7 +34,8 @@ export async function GET(_: NextRequest) {
   const { data: dbResponse, error } = await supabase
     .from("features_env_mapping")
     .select(`enabled, features(name)`)
-    .eq("projectId", projectId);
+    .eq("projectId", projectId)
+    .eq("envId", envId);
 
   if (error) {
     return NextResponse.json(
