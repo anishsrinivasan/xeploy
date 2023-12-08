@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "gen:supabase-types":"npx supabase gen types typescript --project-id '<<PROJECT_ID>>' --schema public > types/supabase.ts"
   },
   "dependencies": {
     "@supabase/ssr": "latest",

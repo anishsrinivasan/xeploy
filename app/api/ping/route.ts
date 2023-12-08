@@ -3,13 +3,17 @@ import { NextRequest } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { getCache, setCache } from "@/utils/upstash/cache";
+import { MOCK_ENVIRONMENT_ID, MOCK_PROJECT_ID } from "@/app/constants";
 
-export const runtime = "edge"; // 'nodejs' is the default
+export const runtime = "edge";
 
 export async function GET(_: NextRequest) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   const cacheKey = "ping";
+
+  const projectId = MOCK_PROJECT_ID;
+  // const environmentId = MOCK_ENVIRONMENT_ID;
 
   const cacheResponse = await getCache(cacheKey);
   if (cacheResponse.cached === "HIT") {
@@ -27,9 +31,10 @@ export async function GET(_: NextRequest) {
     );
   }
 
-  const { data: features, error } = await supabase
+  const { data: dbResponse, error } = await supabase
     .from("features_env_mapping")
-    .select();
+    .select(`enabled, features(name)`)
+    .eq("projectId", projectId);
 
   if (error) {
     return NextResponse.json(
@@ -45,6 +50,11 @@ export async function GET(_: NextRequest) {
       }
     );
   }
+
+  const features = dbResponse.map((x) => ({
+    name: x.features?.name,
+    enabled: x.enabled,
+  }));
 
   setCache(cacheKey, features, 60 * 60);
 
