@@ -16,6 +16,8 @@ export async function GET(_: NextRequest) {
   const projectId = MOCK_PROJECT_ID;
   const envId = MOCK_ENVIRONMENT_ID;
 
+  // API KEY VALIDATION
+
   const cacheResponse = await getCache(cacheKey);
   if (cacheResponse.cached === "HIT") {
     return NextResponse.json(
