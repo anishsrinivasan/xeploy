@@ -41,10 +41,12 @@ export async function GET(_: NextRequest) {
     .eq("envId", envId);
 
   if (error) {
+    console.error("Fetch Response Err", error);
     return NextResponse.json(
       {
         features: [],
         error: ERROR_MESSAGES.INTERNAL_ERROR,
+        errorResponse: error,
       },
       {
         headers: {
