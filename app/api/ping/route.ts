@@ -46,7 +46,6 @@ export async function GET(_: NextRequest) {
       {
         features: [],
         error: ERROR_MESSAGES.INTERNAL_ERROR,
-        errorResponse: error,
       },
       {
         headers: {
