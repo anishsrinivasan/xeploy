@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import { getCache, setCache } from "@/utils/upstash/cache";
+import { getCache, getProjectEnvKey, setCache } from "@/utils/upstash/cache";
 import { MOCK_ENVIRONMENT_ID, MOCK_PROJECT_ID } from "@/constants";
 import { ERROR_MESSAGES } from "@/constants/errors";
 
@@ -11,10 +11,10 @@ export const runtime = "edge";
 export async function GET(_: NextRequest) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const cacheKey = "ping";
 
   const projectId = MOCK_PROJECT_ID;
   const envId = MOCK_ENVIRONMENT_ID;
+  const cacheKey = getProjectEnvKey(projectId, envId);
 
   // API KEY VALIDATION
 
