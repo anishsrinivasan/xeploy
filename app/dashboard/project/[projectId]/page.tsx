@@ -1,5 +1,7 @@
 import { getProject } from "@/lib/actions/projects";
 import StatsCard from "./components/stats-card";
+import Link from "next/link";
+import { getProjectRoute } from "@/lib/route";
 
 export default async function Project({
   params,
@@ -14,8 +16,12 @@ export default async function Project({
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
         <StatsCard name="API Requests" count={totalRequests} />
-        <StatsCard name="Features" count={totalFeautres} />
-        <StatsCard name="Environments" count={totalEnv} />
+        <Link href={getProjectRoute(params.projectId, "features")}>
+          <StatsCard name="Features" count={totalFeautres} />
+        </Link>
+        <Link href={getProjectRoute(params.projectId, "environments")}>
+          <StatsCard name="Environments" count={totalEnv} />
+        </Link>
       </div>
 
       <div className="border rounded-lg space-y-4 p-8">

@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { getFeaturesWithMappings } from "@/lib/actions/features";
 import FeaturesManagement from "./components/features-management";
-import { MOCK_PROJECT_ID } from "@/constants";
 
-export default async function ProjectFeatures() {
-  const features = await getFeaturesWithMappings(MOCK_PROJECT_ID);
+export default async function ProjectFeatures({
+  params,
+}: {
+  params: { projectId: string };
+}) {
+  const features = await getFeaturesWithMappings(params.projectId);
 
   return (
     <>

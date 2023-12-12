@@ -1,8 +1,8 @@
 import { Search } from "@/shared/search";
 import ProjectCard from "./components/project-card";
-import { Button } from "@/components/ui/button";
 import { getProjects } from "@/lib/actions/projects";
 import Link from "next/link";
+import { CreateProject } from "./components/create-project";
 
 export default async function App() {
   const projects = await getProjects();
@@ -18,7 +18,7 @@ export default async function App() {
               </h2>
               <Search className="w-96" />
             </div>
-            <Button>Create Project</Button>
+            <CreateProject />
           </div>
 
           <div className="flex flex-wrap gap-6">

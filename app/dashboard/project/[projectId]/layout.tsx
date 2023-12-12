@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Tabs,
   TabsContent,
@@ -8,7 +7,7 @@ import {
 import "@/app/globals.css";
 import { getProjectRoute } from "@/lib/route";
 import { getProject } from "@/lib/actions/projects";
-import { MOCK_PROJECT_ID } from "@/constants";
+import { EditProject } from "./components/edit-project";
 
 export default async function ProjectLayout({
   children,
@@ -27,7 +26,7 @@ export default async function ProjectLayout({
             <h2 className="text-2xl font-bold tracking-tight mb-4">
               {project.name}
             </h2>
-            <Button variant="outline">Edit Project</Button>
+            <EditProject project={project} />
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList>

@@ -13,15 +13,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { createProject } from "@/lib/actions/projects";
+import { editProject } from "@/lib/actions/projects";
+import { Project } from "@/types/entity";
 import { useState } from "react";
 
-export function CreateProject() {
+type Props = {
+  project: Project;
+};
+
+export function EditProject(props: Props) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
 
   const handleFormSubmit = async (formData: FormData) => {
-    const { error, message } = await createProject(formData);
+    const { error, message } = await editProject(formData);
 
     if (error) {
       toast({
@@ -35,8 +40,8 @@ export function CreateProject() {
     const name = formData.get("name");
 
     toast({
-      title: `Happy Building!`,
-      description: `${name} is Created successfully`,
+      title: `Happy Editing!`,
+      description: `${name} is updated successfully`,
     });
 
     setOpen(false);
@@ -45,14 +50,13 @@ export function CreateProject() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Create Project</Button>
+        <Button variant="outline">Edit Project</Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px] md:max-w-[600px] lg:max-w-[800px]">
         <form action={handleFormSubmit}>
           <DialogHeader>
-            <DialogTitle>Create Project</DialogTitle>
-            <DialogDescription>You're few steps away!</DialogDescription>
+            <DialogTitle>Edit Project</DialogTitle>
           </DialogHeader>
 
           <div className="grid gap-4 py-8 pb-16">
@@ -64,18 +68,27 @@ export function CreateProject() {
                 id="name"
                 name="name"
                 placeholder=""
+                defaultValue={props.project.name}
                 className="col-span-3"
                 required
               />
             </div>
-          </div>
 
+            <Input
+              id="projectId"
+              name="projectId"
+              className="hidden"
+              value={props.project.projectId}
+              required
+              hidden
+            />
+          </div>
 
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit">Create</Button>
+            <Button type="submit">Update</Button>
           </DialogFooter>
         </form>
       </DialogContent>
