@@ -7,8 +7,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Flagsafe",
-  description: "The Safest way to deploy features!",
+  title: "Xeploy",
+  description: "Deploy your features even in the weekend!",
 };
 
 export default async function RootLayout({

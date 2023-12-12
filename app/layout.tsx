@@ -16,8 +16,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "FlagSafe.app",
-  description: "A fail safe way to deploy new features.",
+  title: "Xeploy",
+  description: "Deploy your features safely with Xeploy!",
 };
 
 export default async function RootLayout({
