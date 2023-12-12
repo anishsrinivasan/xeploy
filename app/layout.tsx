@@ -3,9 +3,9 @@ import Snowfall from "@/components/Snowfall";
 import { getFlag } from "@/utils/flag/client";
 import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
 
-export const fontSans = FontSans({
+const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });

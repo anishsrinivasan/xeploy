@@ -18,7 +18,6 @@ export async function getProjectStats(projectId: string) {
     .select("envId", { count: "exact" })
     .eq("projectId", projectId);
 
-
   return {
     totalFeautres: totalFeautres ?? 0,
     totalEnv: totalEnv ?? 0,
@@ -105,7 +104,6 @@ export async function updateFeatureStatus(
 
   const cacheKey = getProjectEnvKey(projectId, envId);
 
-  await clearCache(cacheKey);
   const { error } = await supabase
     .from("features_env_mapping")
     .update({
@@ -114,8 +112,7 @@ export async function updateFeatureStatus(
     .eq("projectId", projectId)
     .eq("featureId", featureId)
     .eq("envId", envId);
-
-  console.log(error);
+  await clearCache(cacheKey);
 
   if (!error) {
     revalidatePath(`/dashboard/project/${projectId}/features`);
