@@ -6,7 +6,6 @@ import { getCache, getProjectEnvKey, setCache } from "@/utils/upstash/cache";
 import { MOCK_ENVIRONMENT_ID, MOCK_PROJECT_ID } from "@/constants";
 import { ERROR_MESSAGES } from "@/constants/errors";
 
-export const runtime = "edge";
 
 export async function GET(_: NextRequest) {
   const cookieStore = cookies();
