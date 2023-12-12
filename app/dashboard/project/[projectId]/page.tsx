@@ -1,10 +1,13 @@
-import { getProjectStats } from "@/lib/actions/features";
+import { getProject } from "@/lib/actions/projects";
 import StatsCard from "./components/stats-card";
-import { MOCK_PROJECT_ID } from "@/constants";
 
-export default async function Project() {
-  const { totalEnv, totalFeautres, totalRequests } = await getProjectStats(
-    MOCK_PROJECT_ID
+export default async function Project({
+  params,
+}: {
+  params: { projectId: string };
+}) {
+  const { totalEnv, totalFeautres, totalRequests } = await getProject(
+    params.projectId
   );
 
   return (

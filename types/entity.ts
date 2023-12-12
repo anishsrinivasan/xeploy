@@ -2,6 +2,7 @@ import { Database } from "@/types/supabase";
 import { z } from "zod";
 
 export type Feature = Database["public"]["Tables"]["features"]["Row"];
+export type Project = Database["public"]["Tables"]["projects"]["Row"];
 
 export const featuresWithMappingSchema = z.object({
   featureId: z.string(),

@@ -5,26 +5,6 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { getProjectEnvKey, clearCache } from "@/utils/upstash/cache";
 
-export async function getProjectStats(projectId: string) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const { count: totalFeautres } = await supabase
-    .from("features")
-    .select("featureId", { count: "exact" })
-    .eq("projectId", projectId);
-
-  const { count: totalEnv } = await supabase
-    .from("environments")
-    .select("envId", { count: "exact" })
-    .eq("projectId", projectId);
-
-  return {
-    totalFeautres: totalFeautres ?? 0,
-    totalEnv: totalEnv ?? 0,
-    totalRequests: 10,
-  };
-}
-
 export async function getFeatures(projectId: string) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);

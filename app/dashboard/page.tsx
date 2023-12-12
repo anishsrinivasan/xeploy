@@ -1,8 +1,12 @@
 import { Search } from "@/shared/search";
 import ProjectCard from "./components/project-card";
 import { Button } from "@/components/ui/button";
+import { getProjects } from "@/lib/actions/projects";
+import Link from "next/link";
 
 export default async function App() {
+  const projects = await getProjects();
+
   return (
     <>
       <div className="flex-1 space-y-4 p-8 pt-6">
@@ -18,9 +22,14 @@ export default async function App() {
           </div>
 
           <div className="flex flex-wrap gap-6">
-            <ProjectCard />
-            <ProjectCard />
-            <ProjectCard />
+            {projects.map((project) => (
+              <Link
+                key={project.projectId}
+                href={`/dashboard/project/${project.projectId}`}
+              >
+                <ProjectCard project={project} />
+              </Link>
+            ))}
           </div>
         </div>
       </div>
