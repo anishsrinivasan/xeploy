@@ -74,15 +74,33 @@ export const getColumns = (data: FeaturesWithMapping[]) => {
         );
       },
     },
+    {
+      accessorKey: "description",
+      enableSorting: false,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Description" />
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="flex space-x-2">
+            <span className="max-w-[500px] truncate font-medium">
+              {row.getValue("description")}
+            </span>
+          </div>
+        );
+      },
+    },
   ];
 
-  const enviroments = data && data[0]
-    ? data[0].environments.sort((a, b) => (a.name > b.name ? 1 : -1))
-    : [];
+  const enviroments =
+    data && data[0]
+      ? data[0].environments.sort((a, b) => (a.name > b.name ? 1 : -1))
+      : [];
 
   enviroments.forEach((env) => {
     columns.push({
       accessorKey: env.name,
+      enableSorting: false,
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={env.name} />
       ),

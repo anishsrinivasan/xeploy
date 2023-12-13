@@ -1,4 +1,4 @@
-import MainNavbar from "@/shared/main-navbar";
+import MainNavbar from "@/components/shared/main-navbar";
 import "./../globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
