@@ -13,8 +13,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { FeaturesWithMapping, } from "@/types/entity";
-
+import { Feature, FeaturesWithMapping } from "@/types/entity";
+import { useFeature } from "../context/feature";
 
 interface DataTableRowActionsProps<TData, TValue> {
   row: Row<TData>;
@@ -23,13 +23,23 @@ interface DataTableRowActionsProps<TData, TValue> {
 
 export function DataTableRowActions<TData, TValue>({
   row,
-
 }: DataTableRowActionsProps<TData, TValue>) {
+  const { openEditFeature, openDeleteFeature } = useFeature();
 
   const onHandleAction = (action: string, data: FeaturesWithMapping) => {
-    console.log(data);
+    const feature: Partial<Feature> = {
+      featureId: data?.featureId,
+      projectId: data?.projectId,
+      description: data?.description,
+      name: data?.name,
+    };
 
     if (action === "edit") {
+      openEditFeature(feature);
+    }
+
+    if (action === "delete") {
+      openDeleteFeature(feature);
     }
   };
 
@@ -52,11 +62,13 @@ export function DataTableRowActions<TData, TValue>({
         >
           Edit
         </DropdownMenuItem>
-        <DropdownMenuItem>Make a copy</DropdownMenuItem>
-        <DropdownMenuItem>Favorite</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() =>
+            onHandleAction("delete", row.original as FeaturesWithMapping)
+          }
+        >
           Delete
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>

@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogClose,
@@ -12,25 +11,26 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
-import { createFeature } from "@/lib/actions/features";
-import { Environments } from "@/types/entity";
-import { useState } from "react";
+import { editFeature } from "@/lib/actions/features";
+
 import { Textarea } from "@/components/ui/textarea";
+import { useFeature } from "../context/feature";
 
-type Props = {
-  environments: Environments[];
-  projectId: string;
-};
+type Props = {};
 
-export function CreateFeature(props: Props) {
+export function EditFeature(_: Props) {
   const { toast } = useToast();
-  const [open, setOpen] = useState(false);
+  const { isEditFeatureOpen, feature, closeEditFeature } = useFeature();
+
+  const handleOpen = (isOpen: boolean) => {
+    if (!isOpen) {
+      closeEditFeature();
+    }
+  };
 
   const handleFormSubmit = async (formData: FormData) => {
-    console.log(formData.get("projectId"), formData.getAll("envEnabled"));
-    const { error, message } = await createFeature(formData);
+    const { error, message } = await editFeature(formData);
 
     if (error) {
       toast({
@@ -42,25 +42,24 @@ export function CreateFeature(props: Props) {
     }
 
     const name = formData.get("name");
-
     toast({
       title: `Happy Building!`,
-      description: `${name} is created successfully`,
+      description: `${name} is updated successfully`,
     });
 
-    setOpen(false);
+    closeEditFeature();
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={isEditFeatureOpen} onOpenChange={handleOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Create Feature</Button>
+        <Button variant="outline">Edit Feature</Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px] md:max-w-[600px] lg:max-w-[800px]">
         <form action={handleFormSubmit}>
           <DialogHeader>
-            <DialogTitle>Create Feature</DialogTitle>
+            <DialogTitle>Edit Feature</DialogTitle>
           </DialogHeader>
 
           <div className="grid gap-4 py-8">
@@ -68,7 +67,15 @@ export function CreateFeature(props: Props) {
               id="projectId"
               name="projectId"
               className="hidden"
-              value={props.projectId}
+              defaultValue={feature?.projectId}
+              required
+              hidden
+            />
+            <Input
+              id="featureId"
+              name="featureId"
+              className="hidden"
+              defaultValue={feature?.featureId}
               required
               hidden
             />
@@ -79,6 +86,7 @@ export function CreateFeature(props: Props) {
               <Input
                 id="name"
                 name="name"
+                defaultValue={feature?.name}
                 placeholder=""
                 className="col-span-3"
                 required
@@ -91,39 +99,18 @@ export function CreateFeature(props: Props) {
               <Textarea
                 id="description"
                 name="description"
+                defaultValue={feature?.description || undefined}
                 placeholder=""
                 className="col-span-3"
               />
             </div>
           </div>
 
-          <Separator />
-
-          <div className="grid gap-4 py-8 pb-16">
-            <p className="text-lg font-medium">Environments Active Status</p>
-            {props.environments.map((env) => (
-              <div key={env.envId} className="flex items-center space-x-2">
-                <Checkbox
-                  defaultChecked
-                  value={env.envId}
-                  name={"envEnabled"}
-                  id={env.envId}
-                />
-                <label
-                  htmlFor={env.envId}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  {env.name}
-                </label>
-              </div>
-            ))}
-          </div>
-
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit">Create</Button>
+            <Button type="submit">Update</Button>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -1,4 +1,4 @@
-import { Search } from "@/shared/search";
+import { Search } from "@/components/shared/search";
 import ProjectCard from "./components/project-card";
 import { getProjects } from "@/lib/actions/projects";
 import Link from "next/link";
