@@ -30,11 +30,11 @@ export default async function Project({
         </h2>
         <p>Let's start with a simple cURL</p>
 
-        <div className="bg-muted p-4 rounded-lg">
+        <pre className="bg-muted p-4 rounded-lg">
           curl "https://included-weasel-35839.upstash.io/set/foo/bar" \
           <br />
           -H "Authorization: Bearer ********"
-        </div>
+        </pre>
       </div>
     </>
   );

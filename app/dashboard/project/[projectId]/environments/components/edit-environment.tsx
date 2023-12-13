@@ -52,12 +52,11 @@ export function EditEnvironment(_: Props) {
 
   return (
     <Dialog open={isEditEnvironmentOpen} onOpenChange={handleOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline">Edit Environment</Button>
-      </DialogTrigger>
-
       <DialogContent className="sm:max-w-[425px] md:max-w-[600px] lg:max-w-[800px]">
         <form action={handleFormSubmit}>
+          <DialogHeader>
+            <DialogTitle>Edit Environment</DialogTitle>
+          </DialogHeader>
           <div className="grid gap-4 py-8">
             <Input
               id="projectId"
