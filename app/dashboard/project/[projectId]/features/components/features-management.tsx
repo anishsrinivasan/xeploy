@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "../components/data-table/data-table";
+import { DataTable } from "../../../../../../components/shared/data-table/data-table";
 import { FeatureProvider } from "../context/feature";
 import { getColumns } from "./columns";
 import { FeaturesWithMapping } from "@/types/entity";

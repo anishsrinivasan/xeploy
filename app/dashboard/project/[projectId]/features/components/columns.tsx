@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { statuses } from "../data/data";
 import { ColumnDef } from "@tanstack/react-table";
 import { FeaturesWithMapping } from "@/types/entity";
-import { DataTableColumnHeader } from "./data-table/data-table-column-header";
+import { DataTableColumnHeader } from "../../../../../../components/shared/data-table/data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import {
   Select,
