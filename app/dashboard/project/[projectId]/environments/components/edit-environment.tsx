@@ -12,25 +12,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { editFeature } from "@/lib/actions/features";
+import { editEnvironment } from "@/lib/actions/environments";
 
-import { Textarea } from "@/components/ui/textarea";
-import { useFeature } from "../context/feature";
+import { useEnvironment } from "../context/environment";
 
 type Props = {};
 
-export function EditFeature(_: Props) {
+export function EditEnvironment(_: Props) {
   const { toast } = useToast();
-  const { isEditFeatureOpen, feature, closeEditFeature } = useFeature();
+  const { isEditEnvironmentOpen, environment, closeEditEnvironment } =
+    useEnvironment();
 
   const handleOpen = (isOpen: boolean) => {
     if (!isOpen) {
-      closeEditFeature();
+      closeEditEnvironment();
     }
   };
 
   const handleFormSubmit = async (formData: FormData) => {
-    const { error, message } = await editFeature(formData);
+    const { error, message } = await editEnvironment(formData);
 
     if (error) {
       toast({
@@ -47,31 +47,31 @@ export function EditFeature(_: Props) {
       description: `${name} is updated successfully`,
     });
 
-    closeEditFeature();
+    closeEditEnvironment();
   };
 
   return (
-    <Dialog open={isEditFeatureOpen} onOpenChange={handleOpen}>
+    <Dialog open={isEditEnvironmentOpen} onOpenChange={handleOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline">Edit Environment</Button>
+      </DialogTrigger>
+
       <DialogContent className="sm:max-w-[425px] md:max-w-[600px] lg:max-w-[800px]">
         <form action={handleFormSubmit}>
-          <DialogHeader>
-            <DialogTitle>Edit Feature</DialogTitle>
-          </DialogHeader>
-
           <div className="grid gap-4 py-8">
             <Input
               id="projectId"
               name="projectId"
               className="hidden"
-              defaultValue={feature?.projectId}
+              defaultValue={environment?.projectId}
               required
               hidden
             />
             <Input
-              id="featureId"
-              name="featureId"
+              id="envId"
+              name="envId"
               className="hidden"
-              defaultValue={feature?.featureId}
+              defaultValue={environment?.envId}
               required
               hidden
             />
@@ -82,22 +82,10 @@ export function EditFeature(_: Props) {
               <Input
                 id="name"
                 name="name"
-                defaultValue={feature?.name}
+                defaultValue={environment?.name}
                 placeholder=""
                 className="col-span-3"
                 required
-              />
-            </div>
-            <div className="grid w-full items-center gap-2 mb-4">
-              <Label className="mb-1" htmlFor="name">
-                Description
-              </Label>
-              <Textarea
-                id="description"
-                name="description"
-                defaultValue={feature?.description || undefined}
-                placeholder=""
-                className="col-span-3"
               />
             </div>
           </div>
