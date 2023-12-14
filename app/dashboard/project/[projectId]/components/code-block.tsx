@@ -12,6 +12,7 @@ import { Environments } from "@/types/entity";
 import { FEATURE_API_ENDPOINT } from "@/constants";
 import { useState } from "react";
 import { useCopyToast } from "@/components/ui/use-copy-toast";
+import { createcURL } from "@/lib/helpers/http";
 
 type Props = {
   environments: Environments[];
@@ -32,12 +33,8 @@ export default function CodeBlockCurl(props: Props) {
     (x) => x.envId === currentEnv
   )?.apiToken;
 
-  const createcUrl = () => {
-    return `curl "${FEATURE_API_ENDPOINT}" \ -H "Authorization: Bearer ${apiToken}"`;
-  };
-
   const copyCurl = async () => {
-    copyToClipboard(createcUrl(), {
+    copyToClipboard(createcURL(apiToken || ""), {
       title: `Copied to Clipboard`,
       description: `cURL is copied to the Clipboard.`,
     });

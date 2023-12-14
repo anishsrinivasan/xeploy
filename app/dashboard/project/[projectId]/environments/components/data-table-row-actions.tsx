@@ -17,6 +17,14 @@ import { useEnvironment } from "../context/environment";
 import { generateAPIToken } from "@/lib/actions/environments";
 import { useToast } from "@/components/ui/use-toast";
 import { useCopyToast } from "@/components/ui/use-copy-toast";
+import { createcURL } from "@/lib/helpers/http";
+import {
+  Trash2,
+  LucideEdit,
+  BracesIcon,
+  CopyCheck,
+  RefreshCcwIcon,
+} from "lucide-react";
 
 interface DataTableRowActionsProps<TData, TValue> {
   row: Row<TData>;
@@ -42,9 +50,16 @@ export function DataTableRowActions<TData, TValue>({
     }
 
     if (action === "copyToken") {
-      copyToClipboard(environment.apiToken || "", {
+      copyToClipboard(environment.apiToken ?? "", {
         title: `Copied to Clipboard`,
         description: `Your token is copied to the Clipboard.`,
+      });
+    }
+
+    if (action === "copycURL") {
+      copyToClipboard(createcURL(environment.apiToken ?? "") || "", {
+        title: `Copied to Clipboard`,
+        description: `cURL is copied to the Clipboard.`,
       });
     }
 
@@ -85,6 +100,7 @@ export function DataTableRowActions<TData, TValue>({
         <DropdownMenuItem
           onClick={() => onHandleAction("edit", row.original as Environments)}
         >
+          <LucideEdit className="mr-2 h-4 w-4" />
           Edit
         </DropdownMenuItem>
 
@@ -93,14 +109,25 @@ export function DataTableRowActions<TData, TValue>({
             onHandleAction("copyToken", row.original as Environments)
           }
         >
+          <CopyCheck className="mr-2 h-4 w-4" />
           Copy Token
         </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() =>
+            onHandleAction("copycURL", row.original as Environments)
+          }
+        >
+          <BracesIcon className="mr-2 h-4 w-4" />
+          Copy cURL
+        </DropdownMenuItem>
+
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() =>
             onHandleAction("generateToken", row.original as Environments)
           }
         >
+          <RefreshCcwIcon className="mr-2 h-4 w-4" />
           Generate Token
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -108,6 +135,7 @@ export function DataTableRowActions<TData, TValue>({
         <DropdownMenuItem
           onClick={() => onHandleAction("delete", row.original as Environments)}
         >
+          <Trash2 className="mr-2 h-4 w-4" />
           Delete
         </DropdownMenuItem>
       </DropdownMenuContent>
