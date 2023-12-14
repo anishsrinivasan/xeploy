@@ -9,12 +9,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Environments, Feature, FeaturesWithMapping } from "@/types/entity";
+import { Environments } from "@/types/entity";
 import { useEnvironment } from "../context/environment";
+import { generateAPIToken } from "@/lib/actions/environments";
+import { useToast } from "@/components/ui/use-toast";
+import { useCopyToast } from "@/components/ui/use-copy-toast";
 
 interface DataTableRowActionsProps<TData, TValue> {
   row: Row<TData>;
@@ -25,14 +27,46 @@ export function DataTableRowActions<TData, TValue>({
   row,
 }: DataTableRowActionsProps<TData, TValue>) {
   const { openEditEnvironment, openDeleteEnvironment } = useEnvironment();
+  const { toast } = useToast();
+  const { copyToClipboard } = useCopyToast();
 
-  const onHandleAction = (action: string, environment: Environments) => {
+  const onHandleAction = async (action: string, environment: Environments) => {
     if (action === "edit") {
       openEditEnvironment(environment);
+      return;
     }
 
     if (action === "delete") {
       openDeleteEnvironment(environment);
+      return;
+    }
+
+    if (action === "copyToken") {
+      copyToClipboard(environment.apiToken || "", {
+        title: `Copied to Clipboard`,
+        description: `Your token is copied to the Clipboard.`,
+      });
+    }
+
+    if (action === "generateToken") {
+      const formData = new FormData();
+      formData.append("projectId", environment?.projectId || "");
+      formData.append("envId", environment?.envId || "");
+      const { error, message } = await generateAPIToken(formData);
+
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: message ?? "Please try again after sometime!",
+        });
+        return;
+      }
+
+      toast({
+        title: `New Token!`,
+        description: `The token is generated.`,
+      });
     }
   };
 
@@ -49,21 +83,32 @@ export function DataTableRowActions<TData, TValue>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem
-          onClick={() =>
-            onHandleAction("edit", row.original as Environments)
-          }
+          onClick={() => onHandleAction("edit", row.original as Environments)}
         >
           Edit
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
+
+        <DropdownMenuItem
+          onClick={() =>
+            onHandleAction("copyToken", row.original as Environments)
+          }
+        >
+          Copy Token
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() =>
-            onHandleAction("delete", row.original as Environments)
+            onHandleAction("generateToken", row.original as Environments)
           }
         >
+          Generate Token
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem
+          onClick={() => onHandleAction("delete", row.original as Environments)}
+        >
           Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
