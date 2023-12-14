@@ -161,7 +161,7 @@ export async function createFeature(formData: FormData) {
 
   const baseData = {
     name: formData.get("name"),
-    description: formData.get("name"),
+    description: formData.get("description"),
     projectId: formData.get("projectId"),
     envEnabled: formData.getAll("envEnabled"),
   };
