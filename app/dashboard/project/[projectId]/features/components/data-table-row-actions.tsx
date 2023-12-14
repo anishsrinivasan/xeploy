@@ -9,12 +9,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 import { Feature, FeaturesWithMapping } from "@/types/entity";
 import { useFeature } from "../context/feature";
+import { Trash2, LucideEdit } from "lucide-react";
 
 interface DataTableRowActionsProps<TData, TValue> {
   row: Row<TData>;
@@ -60,17 +60,17 @@ export function DataTableRowActions<TData, TValue>({
             onHandleAction("edit", row.original as FeaturesWithMapping)
           }
         >
+          <LucideEdit className="mr-2 h-4 w-4" />
           Edit
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() =>
             onHandleAction("delete", row.original as FeaturesWithMapping)
           }
         >
+          <Trash2 className="mr-2 h-4 w-4" />
           Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -2,6 +2,8 @@ import { getProject } from "@/lib/actions/projects";
 import StatsCard from "./components/stats-card";
 import Link from "next/link";
 import { getProjectRoute } from "@/lib/route";
+import GetStarted, { GetStartedLoader } from "./components/get-started";
+import { Suspense } from "react";
 
 export default async function Project({
   params,
@@ -24,18 +26,9 @@ export default async function Project({
         </Link>
       </div>
 
-      <div className="border rounded-lg space-y-4 p-8">
-        <h2 className="text-xl font-bold tracking-tight mb-4">
-          Getting Started
-        </h2>
-        <p>Let's start with a simple cURL</p>
-
-        <pre className="bg-muted p-4 rounded-lg">
-          curl "https://included-weasel-35839.upstash.io/set/foo/bar" \
-          <br />
-          -H "Authorization: Bearer ********"
-        </pre>
-      </div>
+      <Suspense fallback={<GetStartedLoader />}>
+        <GetStarted projectId={params.projectId} />
+      </Suspense>
     </>
   );
 }

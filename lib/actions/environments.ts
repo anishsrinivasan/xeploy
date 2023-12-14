@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { DB_ERROR_CODES } from "../db/codes";
 import { getFeatures } from "./features";
+import { generateToken } from "../auth/api-token";
 
 const CreateEnvironmentSchema = z.object({
   name: z.string(),
@@ -18,6 +19,11 @@ const EditEnvironmentSchema = z.object({
 });
 
 const DeleteEnvironmentSchema = z.object({
+  projectId: z.string(),
+  envId: z.string(),
+});
+
+const generateAPITokenSchema = z.object({
   projectId: z.string(),
   envId: z.string(),
 });
@@ -79,7 +85,6 @@ export async function createEnvironment(formData: FormData) {
 
   const validatedFields = CreateEnvironmentSchema.safeParse(baseData);
 
-  // Return early if the form data is invalid
   if (!validatedFields.success) {
     console.error("CreateEnvironmentValidationFailed");
     const errorMessage = validatedFields.error.issues
@@ -118,16 +123,26 @@ export async function createEnvironment(formData: FormData) {
     };
   }
 
+  const envId = envData[0].envId;
   const { error: featureEnvMappingError } = await CreateFeatureEnvMapping(
     projectId,
-    envData[0].envId
+    envId
   );
 
   if (featureEnvMappingError) {
-    console.error("CreateFeatureMappingFailed", error);
+    console.error("CreateFeatureMappingFailed", featureEnvMappingError);
     return {
       message: "Something went wrong, Try later",
-      error,
+      error: true,
+    };
+  }
+
+  const generateAPITokenErr = await generateTokenAndUpdate(envId, projectId);
+  if (generateAPITokenErr) {
+    console.error("generateAPITokenFailed", generateAPITokenErr);
+    return {
+      message: "Something went wrong, Try later",
+      error: true,
     };
   }
 
@@ -149,7 +164,6 @@ export async function editEnvironment(formData: FormData) {
 
   const validatedFields = EditEnvironmentSchema.safeParse(baseData);
 
-  // Return early if the form data is invalid
   if (!validatedFields.success) {
     console.error("EditEnvironmentValidationFailed");
     const errorMessage = validatedFields.error.issues
@@ -204,7 +218,6 @@ export async function deleteEnvironment(formData: FormData) {
 
   const validatedFields = DeleteEnvironmentSchema.safeParse(baseData);
 
-  // Return early if the form data is invalid
   if (!validatedFields.success) {
     console.error("DeleteEnvironmentValidationFailed");
     const errorMessage = validatedFields.error.issues
@@ -255,4 +268,74 @@ export async function deleteEnvironment(formData: FormData) {
     "layout"
   );
   return { error: null, message: "Environment Deleted" };
+}
+
+export async function generateTokenAndUpdate(envId: string, projectId: string) {
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+
+  const apiToken = await generateToken({ envId, projectId });
+  const { error } = await supabase
+    .from("environments")
+    .update({
+      apiToken: apiToken,
+    })
+    .eq("envId", envId)
+    .eq("projectId", projectId);
+
+  return error;
+}
+
+export async function generateAPIToken(formData: FormData) {
+  "use server";
+
+  const baseData = {
+    projectId: formData.get("projectId"),
+    envId: formData.get("envId"),
+  };
+
+  const validatedFields = generateAPITokenSchema.safeParse(baseData);
+
+  if (!validatedFields.success) {
+    console.error("generateAPITokenFailed");
+    const errorMessage = validatedFields.error.issues
+      .map((x) => x.message)
+      .join(",");
+    return {
+      message: errorMessage || "Validation Failed",
+      error: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+
+  const { envId, projectId } = validatedFields.data;
+  const { data: isExistData, error: isExistError } = await supabase
+    .from("environments")
+    .select()
+    .eq("envId", envId)
+    .eq("projectId", projectId);
+
+  if (!isExistData || isExistError || isExistData.length < 1) {
+    return {
+      error: true,
+      message: "Oops, Something suspicious!",
+    };
+  }
+
+  const error = await generateTokenAndUpdate(envId, projectId);
+  if (error) {
+    console.error("generateAPITokenFailed", error);
+    return {
+      message: "Something went wrong, Try later",
+      error,
+    };
+  }
+
+  revalidatePath(
+    `/dashboard/project/${validatedFields.data.projectId}`,
+    "layout"
+  );
+  return { error: null, message: "Token Updated" };
 }

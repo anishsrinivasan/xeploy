@@ -11,18 +11,21 @@ export interface Database {
     Tables: {
       environments: {
         Row: {
+          apiToken: string | null
           createdAt: string
           envId: string
           name: string
           projectId: string
         }
         Insert: {
+          apiToken?: string | null
           createdAt?: string
           envId?: string
           name: string
           projectId: string
         }
         Update: {
+          apiToken?: string | null
           createdAt?: string
           envId?: string
           name?: string
@@ -73,24 +76,24 @@ export interface Database {
       features_env_mapping: {
         Row: {
           createdAt: string
+          enabled: boolean
           envId: string
           featureId: string
           projectId: string
-          enabled: boolean
         }
         Insert: {
           createdAt?: string
+          enabled?: boolean
           envId: string
           featureId: string
           projectId: string
-          enabled?: boolean
         }
         Update: {
           createdAt?: string
+          enabled?: boolean
           envId?: string
           featureId?: string
           projectId?: string
-          enabled?: boolean
         }
         Relationships: [
           {
