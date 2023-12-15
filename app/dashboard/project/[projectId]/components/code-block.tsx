@@ -13,6 +13,7 @@ import { FEATURE_API_ENDPOINT } from "@/constants";
 import { useState } from "react";
 import { useCopyToast } from "@/components/ui/use-copy-toast";
 import { createcURL } from "@/lib/helpers/http";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   environments: Environments[];
@@ -28,6 +29,8 @@ export default function CodeBlockCurl(props: Props) {
 
   const [currentEnv, setEnv] = useState<string | undefined>(defaultValue);
   const [showToken, setShowToken] = useState(false);
+  const [responseJson, setResponseJson] = useState<string | null>();
+  const [responseTime, setResponseTime] = useState<string | null>();
 
   const apiToken = props.environments.find(
     (x) => x.envId === currentEnv
@@ -42,6 +45,28 @@ export default function CodeBlockCurl(props: Props) {
 
   const toggleShow = () => setShowToken((showToken) => !showToken);
 
+  const runFetch = async () => {
+    try {
+      const startTime = performance.now();
+      const res = await fetch(FEATURE_API_ENDPOINT, {
+        headers: { Authorization: `Bearer ${apiToken}` },
+      });
+      const responseTime = (performance.now() - startTime).toFixed(0);
+      const response = await res.json();
+
+      setResponseJson(response);
+      setResponseTime(responseTime);
+      console.log("Response Time", responseTime);
+    } catch (err) {
+      console.error("runFetchErr", err);
+    }
+  };
+
+  const clearResponse = () => {
+    setResponseJson(null);
+    setResponseTime(null);
+  };
+
   if (!defaultValue) {
     return (
       <p className="text-12">Oops, Please create an Environment to proceed!</p>
@@ -51,7 +76,13 @@ export default function CodeBlockCurl(props: Props) {
   return (
     <div>
       <div className="mb-6">
-        <Select value={currentEnv} onValueChange={(envId) => setEnv(envId)}>
+        <Select
+          value={currentEnv}
+          onValueChange={(envId) => {
+            setEnv(envId);
+            clearResponse();
+          }}
+        >
           <SelectTrigger className="w-[250px]">
             <SelectValue placeholder="Choose an Environment" />
           </SelectTrigger>
@@ -83,6 +114,35 @@ export default function CodeBlockCurl(props: Props) {
           <br />
           -H "Authorization: Bearer {showToken ? apiToken : "*******"}"
         </pre>
+      </div>
+
+      <div className="mt-8 mb-8">
+        <div className="mb-2">
+          <Button className="mr-2" onClick={runFetch} variant="outline">
+            Run
+          </Button>
+
+          <Button onClick={clearResponse} variant="outline">
+            Clear
+          </Button>
+        </div>
+        <div className="h-[10px]">
+          {responseTime ? (
+            <p className="text-gray-600 text-xs">Time Taken : {responseTime}ms</p>
+          ) : (
+            <></>
+          )}
+        </div>
+      </div>
+
+      <div className="border min-h-[200px] rounded-lg p-10">
+        {responseJson ? (
+          <pre>
+            <code>{JSON.stringify(responseJson, null, 2)}</code>
+          </pre>
+        ) : (
+          <p>Tap on the run to test the cURL</p>
+        )}
       </div>
     </div>
   );
