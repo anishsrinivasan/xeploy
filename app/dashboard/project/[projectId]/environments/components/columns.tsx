@@ -47,7 +47,7 @@ export const getColumns = (data: Environments[]) => {
         <DataTableColumnHeader column={column} title="ID" />
       ),
       cell: ({ row }) => (
-        <div className="w-[80px] text-ellipsis">{row.getValue("envId")}</div>
+        <div className="w-[80px] truncate">{row.getValue("envId")}</div>
       ),
       enableSorting: false,
       enableHiding: false,

@@ -52,7 +52,7 @@ export const getColumns = (data: FeaturesWithMapping[]) => {
         <DataTableColumnHeader column={column} title="ID" />
       ),
       cell: ({ row }) => (
-        <div className="w-[80px] text-ellipsis">
+        <div className="w-[80px] truncate">
           {row.getValue("featureId")}
         </div>
       ),

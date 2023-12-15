@@ -7,11 +7,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 import { getUserData } from "@/lib/actions/auth";
 import LogoutClient from "./logout";
 
 export async function UserNav() {
   const data = await getUserData();
+
+  if (!data) {
+    return (
+      <div>
+        <Link href="/login">
+          <Button>Get Started</Button>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <DropdownMenu>
