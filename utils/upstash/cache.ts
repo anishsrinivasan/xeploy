@@ -6,8 +6,12 @@ const redis = new Redis({
 });
 
 export const getProjectEnvKey = (projectId: string, envId: string) => {
-  return `${projectId}::${envId}`
-}
+  return `${projectId}::${envId}`;
+};
+
+export const getProjectIncrKey = (projectId: string) => {
+  return `project-request::${projectId}`;
+};
 
 export const getCache = async <T>(
   key: string
@@ -30,5 +34,10 @@ export const setCache = async <T>(key: string, payload: T, ex: number = 60) => {
 
 export const clearCache = async <T>(key: string) => {
   await redis.del(key);
+  return;
+};
+
+export const redisIncr = async <T>(key: string) => {
+  await redis.incr(key);
   return;
 };

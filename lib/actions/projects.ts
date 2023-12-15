@@ -1,6 +1,7 @@
 "use server";
 import { DEFAULT_ENV_NAME, MOCK_USER_ID } from "@/constants";
 import { createClient } from "@/utils/supabase/server";
+import { getCache, getProjectIncrKey } from "@/utils/upstash/cache";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
@@ -51,11 +52,14 @@ export async function getProject(projectId: string) {
     .select("envId", { count: "exact" })
     .eq("projectId", projectId);
 
+  const totalRequests =
+    ((await getCache(getProjectIncrKey(projectId)))?.data as number) ?? 0;
+
   return {
     project,
     totalFeautres: totalFeautres ?? 0,
     totalEnv: totalEnv ?? 0,
-    totalRequests: 10,
+    totalRequests: totalRequests,
   };
 }
 
