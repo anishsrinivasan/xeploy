@@ -4,6 +4,7 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
+import { PUBLIC_URL } from "@/constants";
 
 export default function Login({
   searchParams,
@@ -36,7 +37,7 @@ export default function Login({
     const { error, data } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: "http://localhost:3000/login/test",
+        redirectTo: `${PUBLIC_URL}/login/test`,
       },
     });
 
