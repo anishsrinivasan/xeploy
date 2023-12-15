@@ -18,7 +18,7 @@ export default function AuthenticationPage() {
         },
       },
     })
-    
+
   };
 
 
@@ -76,9 +76,9 @@ export default function AuthenticationPage() {
               </h1>
             </div>
             <GoogleButton
-  type="light" // can be light or dark
-  onClick={handleSignInWithGoogle}
-/>
+              type="dark" // can be light or dark
+              onClick={handleSignInWithGoogle}
+            />
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link
