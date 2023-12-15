@@ -1,16 +1,27 @@
+"use client"
 import Link from 'next/link'
-import { Metadata } from "next"
 import Image from "next/image"
-import { cn } from "@/lib/utils"
-import { buttonVariants } from '@/components/ui/button'
-import { UserAuthForm } from '@/components/ui/user-auth-form'
+import { supabase } from '../supabase'
+import GoogleButton from 'react-google-button'
 
-export const metadata: Metadata = {
-  title: "Authentication",
-  description: "Authentication forms built using the components.",
-}
 
 export default function AuthenticationPage() {
+
+
+  const handleSignInWithGoogle = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+      },
+    })
+    
+  };
+
+
   return (
     <>
       <div className="md:hidden">
@@ -46,7 +57,7 @@ export default function AuthenticationPage() {
             >
               <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
             </svg>
-           Flagsafe
+            Flagsafe
           </div>
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
@@ -63,11 +74,11 @@ export default function AuthenticationPage() {
               <h1 className="text-2xl font-semibold tracking-tight">
                 Create an account
               </h1>
-              <p className="text-sm text-muted-foreground">
-                Enter your email below to create your account
-              </p>
             </div>
-            <UserAuthForm />
+            <GoogleButton
+  type="light" // can be light or dark
+  onClick={handleSignInWithGoogle}
+/>
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link
