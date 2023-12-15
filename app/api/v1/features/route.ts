@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
+import { createClient } from "@/utils/supabase/admin";
 import { getCache, getProjectEnvKey, setCache } from "@/utils/upstash/cache";
 import { ERROR_MESSAGES } from "@/constants/errors";
 import { verifyAPIToken } from "@/lib/auth/api-token";
@@ -9,9 +8,6 @@ import { API_CACHE_KEY } from "@/constants";
 import { getErrorMessage } from "@/lib/helpers/error";
 
 export async function GET(req: NextRequest) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-
   let projectId = "";
   let envId = "";
 
@@ -50,6 +46,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  const supabase = createClient();
   const { data: dbResponse, error } = await supabase
     .from("features_env_mapping")
     .select(`enabled, features(name)`)

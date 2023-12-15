@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { UserNav } from "./user-nav";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function MainNavbar() {
   return (
@@ -10,7 +12,9 @@ export default function MainNavbar() {
             <h2 className="text-md font-bold tracking-tight">Xeploy</h2>
           </Link>
           <div className="ml-auto flex items-center space-x-4">
-            <UserNav />
+            <Suspense fallback={<Skeleton className="h-8 w-8 rounded-full" />}>
+              <UserNav />
+            </Suspense>
           </div>
         </div>
       </div>
