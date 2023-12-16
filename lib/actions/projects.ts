@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
 import { z } from "zod";
+import { generateTokenAndUpdate } from "./environments";
 
 const CreateProjectSchema = z.object({
   name: z.string(),
@@ -83,9 +84,11 @@ export async function createProject(formData: FormData) {
 
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
+  const userId = (await supabase.auth.getUser()).data.user?.id ?? "";
+
   const { error, data: projectData } = await supabase
     .from("projects")
-    .insert({ name: validatedFields.data.name, userId: MOCK_USER_ID })
+    .insert({ name: validatedFields.data.name, userId: userId })
     .select();
 
   if (error) {
@@ -96,15 +99,29 @@ export async function createProject(formData: FormData) {
     };
   }
 
-  const { error: envError } = await supabase
+  const projectId = projectData[0].projectId;
+
+  const { error: envError, data: envData } = await supabase
     .from("environments")
-    .insert({ name: DEFAULT_ENV_NAME, projectId: projectData[0].projectId });
+    .insert({ name: DEFAULT_ENV_NAME, projectId })
+    .select();
 
   if (envError) {
     console.error("CreateEnvFailed", error);
     return {
       message: "Something went wrong, Try later",
       error,
+    };
+  }
+
+  const envId = envData[0].envId;
+
+  const generateAPITokenErr = await generateTokenAndUpdate(envId, projectId);
+  if (generateAPITokenErr) {
+    console.error("generateAPITokenFailed", generateAPITokenErr);
+    return {
+      message: "Something went wrong, Try later",
+      error: true,
     };
   }
 
