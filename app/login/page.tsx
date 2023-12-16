@@ -1,12 +1,29 @@
 "use client"
 import Link from 'next/link'
 import Image from "next/image"
-import { supabase } from '../supabase'
-import GoogleButton from 'react-google-button'
-
+import { createClient } from "@/utils/supabase/client";
+import { redirect } from "next/navigation";
+import { PUBLIC_URL } from "@/constants";
+import { Button } from '@/components/ui/button';
 
 export default function AuthenticationPage() {
 
+  const signIn = async () => {
+    const supabase = createClient();
+
+    const { error, data } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${PUBLIC_URL}/dashboard`,
+      },
+    });
+
+    console.log(data);
+
+    if (error) {
+      return redirect("/login?message=Could not authenticate user");
+    }
+  };
 
 
 
@@ -63,9 +80,9 @@ export default function AuthenticationPage() {
                 Create an account
               </h1>
             </div>
-            <div className='ml-20'>            <GoogleButton
-              type="dark" // can be light or dark
-            /></div>
+            <div className='ml-20'>
+              <Button onClick={signIn}>Sign in</Button>
+            </div>
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link
