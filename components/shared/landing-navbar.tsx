@@ -8,7 +8,7 @@ export default function LandingNavbar(
   props: Props = { showGetStartedButton: false }
 ) {
   return (
-    <header className="absolute top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="absolute top-0 z-50 w-full">
       <div className="flex-col md:flex">
         <div className="flex h-20 items-center px-8 md:px-16">
           <Link href="/">
