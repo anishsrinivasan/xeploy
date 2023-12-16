@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { statuses } from "../data/data";
 import { ColumnDef } from "@tanstack/react-table";
 import { FeaturesWithMapping } from "@/types/entity";
-import { DataTableColumnHeader } from "./data-table/data-table-column-header";
+import { DataTableColumnHeader } from "../../../../../../components/shared/data-table/data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import {
   Select,
@@ -52,7 +52,7 @@ export const getColumns = (data: FeaturesWithMapping[]) => {
         <DataTableColumnHeader column={column} title="ID" />
       ),
       cell: ({ row }) => (
-        <div className="w-[80px] text-ellipsis">
+        <div className="w-[80px] truncate">
           {row.getValue("featureId")}
         </div>
       ),
@@ -74,15 +74,33 @@ export const getColumns = (data: FeaturesWithMapping[]) => {
         );
       },
     },
+    {
+      accessorKey: "description",
+      enableSorting: false,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Description" />
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="flex space-x-2">
+            <span className="max-w-[500px] truncate font-medium">
+              {row.getValue("description")}
+            </span>
+          </div>
+        );
+      },
+    },
   ];
 
-  const enviroments = data && data[0]
-    ? data[0].environments.sort((a, b) => (a.name > b.name ? 1 : -1))
-    : [];
+  const enviroments =
+    data && data[0]
+      ? data[0].environments.sort((a, b) => (a.name > b.name ? 1 : -1))
+      : [];
 
   enviroments.forEach((env) => {
     columns.push({
       accessorKey: env.name,
+      enableSorting: false,
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={env.name} />
       ),

@@ -1,6 +1,7 @@
 "use server";
-import { MOCK_USER_ID } from "@/constants";
+import { DEFAULT_ENV_NAME, MOCK_USER_ID } from "@/constants";
 import { createClient } from "@/utils/supabase/server";
+import { getCache, getProjectIncrKey } from "@/utils/upstash/cache";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
@@ -51,11 +52,14 @@ export async function getProject(projectId: string) {
     .select("envId", { count: "exact" })
     .eq("projectId", projectId);
 
+  const totalRequests =
+    ((await getCache(getProjectIncrKey(projectId)))?.data as number) ?? 0;
+
   return {
     project,
     totalFeautres: totalFeautres ?? 0,
     totalEnv: totalEnv ?? 0,
-    totalRequests: 10,
+    totalRequests: totalRequests,
   };
 }
 
@@ -79,12 +83,25 @@ export async function createProject(formData: FormData) {
 
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const { error } = await supabase
+  const { error, data: projectData } = await supabase
     .from("projects")
-    .insert({ name: validatedFields.data.name, userId: MOCK_USER_ID });
+    .insert({ name: validatedFields.data.name, userId: MOCK_USER_ID })
+    .select();
 
   if (error) {
     console.error("CreateProjectFailed", error);
+    return {
+      message: "Something went wrong, Try later",
+      error,
+    };
+  }
+
+  const { error: envError } = await supabase
+    .from("environments")
+    .insert({ name: DEFAULT_ENV_NAME, projectId: projectData[0].projectId });
+
+  if (envError) {
+    console.error("CreateEnvFailed", error);
     return {
       message: "Something went wrong, Try later",
       error,

@@ -9,12 +9,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { FeaturesWithMapping, } from "@/types/entity";
-
+import { Feature, FeaturesWithMapping } from "@/types/entity";
+import { useFeature } from "../context/feature";
+import { Trash2, LucideEdit } from "lucide-react";
 
 interface DataTableRowActionsProps<TData, TValue> {
   row: Row<TData>;
@@ -23,13 +23,23 @@ interface DataTableRowActionsProps<TData, TValue> {
 
 export function DataTableRowActions<TData, TValue>({
   row,
-
 }: DataTableRowActionsProps<TData, TValue>) {
+  const { openEditFeature, openDeleteFeature } = useFeature();
 
   const onHandleAction = (action: string, data: FeaturesWithMapping) => {
-    console.log(data);
+    const feature: Partial<Feature> = {
+      featureId: data?.featureId,
+      projectId: data?.projectId,
+      description: data?.description,
+      name: data?.name,
+    };
 
     if (action === "edit") {
+      openEditFeature(feature);
+    }
+
+    if (action === "delete") {
+      openDeleteFeature(feature);
     }
   };
 
@@ -50,15 +60,17 @@ export function DataTableRowActions<TData, TValue>({
             onHandleAction("edit", row.original as FeaturesWithMapping)
           }
         >
+          <LucideEdit className="mr-2 h-4 w-4" />
           Edit
         </DropdownMenuItem>
-        <DropdownMenuItem>Make a copy</DropdownMenuItem>
-        <DropdownMenuItem>Favorite</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() =>
+            onHandleAction("delete", row.original as FeaturesWithMapping)
+          }
+        >
+          <Trash2 className="mr-2 h-4 w-4" />
           Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

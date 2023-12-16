@@ -23,8 +23,7 @@ export default function ProjectCard({ project }: Props) {
       </CardHeader>
       <CardContent className="flex justify-end">
         <Avatar className="h-8 w-8">
-          <AvatarImage className="w-8" src="/avatars/01.png" alt="@shadcn" />
-          <AvatarFallback>R</AvatarFallback>
+          <AvatarFallback>{project?.name?.charAt(0).toUpperCase()}</AvatarFallback>
         </Avatar>
       </CardContent>
     </CardComponent>

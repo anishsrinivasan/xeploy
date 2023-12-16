@@ -1,5 +1,7 @@
-import MainNavbar from "@/shared/main-navbar";
+import MainNavbar from "@/components/shared/main-navbar";
 import "./../globals.css";
+import { getUserData } from "@/lib/actions/auth";
+import { redirect } from "next/navigation";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -16,6 +18,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const user = await getUserData();
+  if (!user) {
+    redirect("/");
+  }
+
   return (
     <div className="w-full">
       <MainNavbar />
