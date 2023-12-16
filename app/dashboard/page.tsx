@@ -1,5 +1,4 @@
-import { Search } from "@/components/shared/search";
-import ProjectCard from "./components/project-card";
+import ProjectCard, { ProjectEmptyCard } from "./components/project-card";
 import { getProjects } from "@/lib/actions/projects";
 import Link from "next/link";
 import { CreateProject } from "./components/create-project";
@@ -18,14 +17,18 @@ export default async function App() {
         </div>
 
         <div className="flex flex-wrap gap-6">
-          {projects.map((project) => (
-            <Link
-              key={project.projectId}
-              href={`/dashboard/project/${project.projectId}`}
-            >
-              <ProjectCard project={project} />
-            </Link>
-          ))}
+          {projects.length > 0 ? (
+            projects.map((project) => (
+              <Link
+                key={project.projectId}
+                href={`/dashboard/project/${project.projectId}`}
+              >
+                <ProjectCard project={project} />
+              </Link>
+            ))
+          ) : (
+            <ProjectEmptyCard />
+          )}
         </div>
       </div>
     </>

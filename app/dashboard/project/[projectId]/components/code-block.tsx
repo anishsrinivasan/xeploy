@@ -22,7 +22,7 @@ type Props = {
 export default function CodeBlockCurl(props: Props) {
   const { copyToClipboard } = useCopyToast();
   const defaultValue = props?.environments
-    ? props?.environments?.length > 1
+    ? props?.environments?.length > 0
       ? props?.environments[0].envId
       : undefined
     : undefined;
@@ -128,7 +128,9 @@ export default function CodeBlockCurl(props: Props) {
         </div>
         <div className="h-[10px]">
           {responseTime ? (
-            <p className="text-gray-600 text-xs">Time Taken : {responseTime}ms</p>
+            <p className="text-gray-600 text-xs">
+              Time Taken : {responseTime}ms
+            </p>
           ) : (
             <></>
           )}
