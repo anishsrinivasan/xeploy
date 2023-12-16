@@ -1,6 +1,7 @@
 import MainNavbar from "@/components/shared/main-navbar";
 import { Button } from "@/components/ui//button";
 import Link from "next/link";
+import LpCard from "@/components/lpCards";
 
 export default async function Index() {
   return (
@@ -29,6 +30,14 @@ export default async function Index() {
                 Github
               </Button>
             </a>
+          </div>
+          <div className="grid md:grid-cols-6 grid-cols-3 gap-[32px] m-auto mt-12">
+<LpCard name="A"/>
+<LpCard name="B"/>
+<LpCard name="C"/>
+<LpCard name="D"/>
+<LpCard name="E"/>
+<LpCard name="F"/>
           </div>
         </div>
       </div>
