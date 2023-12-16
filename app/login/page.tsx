@@ -8,18 +8,6 @@ import GoogleButton from 'react-google-button'
 export default function AuthenticationPage() {
 
 
-  const handleSignInWithGoogle = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        },
-      },
-    })
-
-  };
 
 
   return (
@@ -75,10 +63,9 @@ export default function AuthenticationPage() {
                 Create an account
               </h1>
             </div>
-            <GoogleButton
+            <div className='ml-20'>            <GoogleButton
               type="dark" // can be light or dark
-              onClick={handleSignInWithGoogle}
-            />
+            /></div>
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link
