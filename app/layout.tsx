@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { PUBLIC_URL } from "@/constants";
+import { Analytics } from "@vercel/analytics/react";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -14,7 +15,8 @@ const fontSans = FontSans({
 export const metadata = {
   metadataBase: new URL(PUBLIC_URL),
   title: "Xeploy - Launch your Features safely with on-demand rollback.",
-  description: " Xeploy is a feature-flagging app that simplifies the process of deploying features.",
+  description:
+    " Xeploy is a feature-flagging app that simplifies the process of deploying features.",
 };
 
 export default async function RootLayout({
@@ -37,6 +39,7 @@ export default async function RootLayout({
           {children}
         </main>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
