@@ -13,7 +13,7 @@ export default async function Index() {
             Launch your feautres safely with on-demand rollback.
           </h1>
           <p className="max-w-lg text-lg font-medium text-center mb-8 text-muted-foreground">
-            Xeploy is a versatile feature-flagging app that simplifies the
+            Xeploy is a feature-flagging app that simplifies the
             process of deploying features.
           </p>
           <div className="flex items-center">

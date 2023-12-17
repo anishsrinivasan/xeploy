@@ -4,20 +4,17 @@ import { getFlag } from "@/utils/flag/client";
 import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
+import { PUBLIC_URL } from "@/constants";
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
-
 export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "Xeploy",
-  description: "Deploy your features safely with Xeploy!",
+  metadataBase: new URL(PUBLIC_URL),
+  title: "Xeploy - Launch your feautres safely with on-demand rollback.",
+  description: " Xeploy is a feature-flagging app that simplifies the process of deploying features.",
 };
 
 export default async function RootLayout({
