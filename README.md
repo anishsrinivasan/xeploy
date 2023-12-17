@@ -1,5 +1,6 @@
+![Xeploy](https://raw.githubusercontent.com/anishsrinivasan/xeploy/bd783da2bfcd676b2c9f97ea62bf05e5e66834bb/app/opengraph-image.png)
+
 # Xeploy
-### Launch your feautres safely with on-demand rollback.
 
 Welcome to Xeploy, your go-to solution for feature flagging! Xeploy empowers you to take control of your application's destiny with feature flagging. Our platform is designed to help you deploy new features safely, experiment with ease, and deliver tailored experiences to your users.
 
