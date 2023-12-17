@@ -1,13 +1,18 @@
 "use server";
 import { DEFAULT_ENV_NAME, MOCK_USER_ID } from "@/constants";
 import { createClient } from "@/utils/supabase/server";
-import { getCache, getProjectIncrKey } from "@/utils/upstash/cache";
+import {
+  clearCache,
+  getCache,
+  getProjectEnvKey,
+  getProjectIncrKey,
+} from "@/utils/upstash/cache";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
 import { z } from "zod";
-import { generateTokenAndUpdate } from "./environments";
+import { generateTokenAndUpdate, getEnvironments } from "./environments";
 
 const CreateProjectSchema = z.object({
   name: z.string(),
@@ -167,3 +172,14 @@ export async function editProject(formData: FormData) {
 
   return { error: null, message: "Project Updated" };
 }
+
+export const clearCacheForProject = async (projectId: string) => {
+  const environments = await getEnvironments(projectId);
+
+  for (const env of environments) {
+    const cacheKey = getProjectEnvKey(projectId, env.envId);
+    await clearCache(cacheKey);
+  }
+
+  return true;
+};
