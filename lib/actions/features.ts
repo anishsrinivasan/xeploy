@@ -7,6 +7,7 @@ import { getProjectEnvKey, clearCache } from "@/utils/upstash/cache";
 import { z } from "zod";
 import { getEnvironments } from "./environments";
 import { DB_ERROR_CODES } from "../db/codes";
+import { clearCacheForProject } from "./projects";
 
 const CreateFeatureSchema = z.object({
   name: z.string(),
@@ -222,6 +223,8 @@ export async function createFeature(formData: FormData) {
     };
   }
 
+  await clearCacheForProject(projectId);
+
   revalidatePath(
     `/dashboard/project/${validatedFields.data.projectId}`,
     "layout"
@@ -253,11 +256,11 @@ export async function editFeature(formData: FormData) {
     };
   }
 
-  const { featureId } = validatedFields.data;
+  const { featureId, projectId } = validatedFields.data;
 
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const { error, data: featureData } = await supabase
+  const { error } = await supabase
     .from("features")
     .update({
       name: validatedFields.data.name,
@@ -280,10 +283,9 @@ export async function editFeature(formData: FormData) {
     };
   }
 
-  revalidatePath(
-    `/dashboard/project/${validatedFields.data.projectId}`,
-    "layout"
-  );
+  await clearCacheForProject(projectId);
+
+  revalidatePath(`/dashboard/project/${projectId}`, "layout");
   return { error: null, message: "Feature Updated" };
 }
 
@@ -342,6 +344,8 @@ export async function deleteFeature(formData: FormData) {
       error: deleteFeatureError,
     };
   }
+
+  await clearCacheForProject(projectId);
 
   revalidatePath(
     `/dashboard/project/${validatedFields.data.projectId}`,
