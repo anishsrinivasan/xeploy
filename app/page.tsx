@@ -39,6 +39,7 @@ export default async function Index() {
             alt="Xeploy"
             height={"411"}
             width={"1600"}
+            priority
           />
         </div>
       </div>
