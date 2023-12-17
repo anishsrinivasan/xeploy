@@ -11,7 +11,7 @@ export default async function Index() {
       <div className="flex-1 w-full flex justify-center flex-col items-center fadeInUp">
         <div className="flex flex-col w-full justify-center items-center px-6 mt-[150px] mb-12">
           <h1 className="text-3xl md:text-5xl font-bold text-center max-w-2xl leading-none mb-4">
-            Launch your feautres safely with on-demand rollback.
+            Launch your Features safely with on-demand rollback.
           </h1>
           <p className="max-w-lg text-lg font-medium text-center mb-8 text-muted-foreground">
             Xeploy is a feature-flagging app that simplifies the process of

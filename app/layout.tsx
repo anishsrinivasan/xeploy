@@ -13,7 +13,7 @@ const fontSans = FontSans({
 
 export const metadata = {
   metadataBase: new URL(PUBLIC_URL),
-  title: "Xeploy - Launch your feautres safely with on-demand rollback.",
+  title: "Xeploy - Launch your Features safely with on-demand rollback.",
   description: " Xeploy is a feature-flagging app that simplifies the process of deploying features.",
 };
 

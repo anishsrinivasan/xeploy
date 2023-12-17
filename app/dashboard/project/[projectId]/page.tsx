@@ -10,7 +10,7 @@ export default async function Project({
 }: {
   params: { projectId: string };
 }) {
-  const { totalEnv, totalFeautres, totalRequests } = await getProject(
+  const { totalEnv, totalFeatures, totalRequests } = await getProject(
     params.projectId
   );
 
@@ -19,7 +19,7 @@ export default async function Project({
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
         <StatsCard name="API Requests" count={totalRequests} />
         <Link href={getProjectRoute(params.projectId, "features")}>
-          <StatsCard name="Features" count={totalFeautres} />
+          <StatsCard name="Features" count={totalFeatures} />
         </Link>
         <Link href={getProjectRoute(params.projectId, "environments")}>
           <StatsCard name="Environments" count={totalEnv} />
