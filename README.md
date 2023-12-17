@@ -1,4 +1,4 @@
-![Xeploy](https://raw.githubusercontent.com/anishsrinivasan/xeploy/bd783da2bfcd676b2c9f97ea62bf05e5e66834bb/app/opengraph-image.png)
+![Xeploy](https://raw.githubusercontent.com/anishsrinivasan/xeploy/main/app/opengraph-image.png)
 
 # Xeploy
 
