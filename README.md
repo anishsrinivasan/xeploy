@@ -7,12 +7,6 @@ Welcome to Xeploy, your go-to solution for feature flagging! Xeploy empowers you
 ### Why Xeploy?
 Xeploy is here to simplify the way you manage feature flags, making it an essential tool for any development team.
 
-- **Simplicity**: Xeploy makes it incredibly easy to enable or disable features in your application. No more complex deployment processes or code changes required.
-- **Multi-Environment Support**: Whether you're managing feature flags for development, staging, or production environments, Xeploy has you covered. Seamlessly switch between environments with ease.
-- **Lightning-Fast Latency**: Xeploy boasts an impressive latency of under ~500ms, ensuring that your feature flags respond quickly, delivering a seamless user experience.
-
-
-
 ### Xeploy Features
 - **Enable Features with a Click**
 Xeploy makes it incredibly easy to enable or disable features in your application. Say goodbye to complex deployment processes and hello to hassle-free feature flag management.
@@ -37,7 +31,6 @@ We're committed to continually improving Xeploy to meet your evolving needs. Her
 - Shadcn
 - Upstash
 - Vercel
-
 
 
 Experience the power of Xeploy and revolutionize the way you manage feature flags. Deploy your features safely, experiment with confidence, and create tailored experiences for your users. Join the Xeploy community today! Let's make feature flagging a breeze.
