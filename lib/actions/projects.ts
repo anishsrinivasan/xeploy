@@ -43,7 +43,7 @@ export async function getProject(projectId: string) {
     return notFound();
   }
 
-  const { count: totalFeautres } = await supabase
+  const { count: totalFeatures } = await supabase
     .from("features")
     .select("featureId", { count: "exact" })
     .eq("projectId", projectId);
@@ -58,7 +58,7 @@ export async function getProject(projectId: string) {
 
   return {
     project,
-    totalFeautres: totalFeautres ?? 0,
+    totalFeatures: totalFeatures ?? 0,
     totalEnv: totalEnv ?? 0,
     totalRequests: totalRequests,
   };
