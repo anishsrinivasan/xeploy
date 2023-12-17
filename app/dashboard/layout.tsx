@@ -3,16 +3,6 @@ import "./../globals.css";
 import { getUserData } from "@/lib/actions/auth";
 import { redirect } from "next/navigation";
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
-
-export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "Xeploy",
-  description: "Deploy your features even in the weekend!",
-};
-
 export default async function RootLayout({
   children,
 }: {
