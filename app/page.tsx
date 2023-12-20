@@ -18,7 +18,7 @@ export default async function Index() {
             deploying features.
           </p>
           <div className="flex items-center">
-            <Link href="/login">
+            <Link prefetch={false} href="/login">
               <Button className="md:h-[50px] md:w-[180px] md:text-lg font-bold mr-4">
                 Get Started
               </Button>
@@ -37,8 +37,9 @@ export default async function Index() {
           <Image
             src="/xeploy-screens.png"
             alt="Xeploy"
-            height={"411"}
-            width={"1600"}
+            height={110}
+            width={430}
+            layout="responsive"
             priority
           />
         </div>

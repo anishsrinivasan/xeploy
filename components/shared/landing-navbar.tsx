@@ -17,7 +17,7 @@ export default function LandingNavbar(
 
           {props?.showGetStartedButton ? (
             <div className="ml-auto flex items-center space-x-4">
-              <Link href="/login">
+              <Link href="/login" prefetch={false}>
                 <Button>Get Started</Button>
               </Link>
             </div>
