@@ -1,7 +1,7 @@
 import LandingNavbar from "@/components/shared/landing-navbar";
 import { Button } from "@/components/ui//button";
 import Link from "next/link";
-import { Icons } from "@/components/ui/icons";
+import { Gauge, Timer } from "lucide-react";
 import Image from "next/image";
 
 export default async function Index() {
@@ -18,19 +18,20 @@ export default async function Index() {
             deploying features.
           </p>
           <div className="flex items-center">
-            <Link prefetch={false} href="/login">
-              <Button className="md:h-[50px] md:w-[180px] md:text-lg font-bold mr-4">
-                Get Started
-              </Button>
-            </Link>
-            <a target="_blank" href="https://github.com/anishsrinivasan/xeploy">
+            <Link href="/auth/demo" prefetch={false}>
               <Button
                 variant="outline"
-                className="md:h-[50px] md:w-[180px] md:text-lg font-bold"
+                className="md:h-[50px] md:w-[180px] md:text-lg font-bold mr-4"
               >
-                <Icons.gitHub className="mr-2 h-4 w-4" /> Github
+                <Timer className="mr-2 h-4 w-4" />
+                Try Live Demo
               </Button>
-            </a>
+            </Link>
+            <Link prefetch={false} href="/login">
+              <Button className="md:h-[50px] md:w-[180px] md:text-lg font-bold">
+                <Gauge className="mr-2 h-4 w-4" /> Get Started
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="flex justify-center fadeInUp">
