@@ -2,6 +2,7 @@ import MainNavbar from "@/components/shared/main-navbar";
 import "./../globals.css";
 import { getUserData } from "@/lib/actions/auth";
 import { redirect } from "next/navigation";
+import Demobar from "@/components/shared/demo-bar";
 
 export default async function RootLayout({
   children,
@@ -16,6 +17,7 @@ export default async function RootLayout({
   return (
     <div className="w-full">
       <MainNavbar />
+      <Demobar />
       {children}
     </div>
   );

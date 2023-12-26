@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui//button";
+import { Gauge, Timer } from "lucide-react";
+import { Icons } from "@/components/ui/icons";
 
 type Props = {
   showGetStartedButton?: boolean;
@@ -17,8 +19,25 @@ export default function LandingNavbar(
 
           {props?.showGetStartedButton ? (
             <div className="ml-auto flex items-center space-x-4">
+              <a
+                target="_blank"
+                href="https://github.com/anishsrinivasan/xeploy"
+              >
+                <Icons.gitHub className="mr-2 h-6 w-6" />
+              </a>
+              <Link
+                className="hidden md:block"
+                href="/auth/demo"
+                prefetch={false}
+              >
+                <Button variant="outline">
+                  <Timer className="mr-2 h-4 w-4" /> Try Live Demo
+                </Button>
+              </Link>
               <Link href="/login" prefetch={false}>
-                <Button>Get Started</Button>
+                <Button>
+                  <Gauge className="mr-2 h-4 w-4" /> Get Started
+                </Button>
               </Link>
             </div>
           ) : (
